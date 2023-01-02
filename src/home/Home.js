@@ -16,6 +16,11 @@ export function Home() {
     return (
         <div>
             HOME
+            <h2>Your notes</h2>
+            {authState.jwt != null && <div>
+                <button onClick={(e) => navigate("/create-note")}>Create new Note</button>
+            </div>}
+
             <div style={{marginTop: "16px"}}>
                 {authState.jwt === null && <button onClick={(e) => navigate("/login")}>Login</button>}
             </div>
