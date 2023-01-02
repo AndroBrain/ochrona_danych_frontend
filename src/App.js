@@ -5,6 +5,7 @@ import {Login} from "./auth/Login";
 import {useState} from "react";
 import {authContext} from "./auth/auth";
 import {Home} from "./home/Home";
+import {PublicNote} from "./note/PublicNote";
 
 function App() {
     const [authState, setAuthState] = useState({
@@ -15,7 +16,8 @@ function App() {
         createRoutesFromElements([
             <Route path="/" element={<Home/>}/>,
             <Route path="/login" element={<Login/>}/>,
-            <Route path="/register" element={<Register/>}/>
+            <Route path="/register" element={<Register/>}/>,
+            <Route path="/public/:id" element={<PublicNote/>}/>,
         ])
     )
     return (
