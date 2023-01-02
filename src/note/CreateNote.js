@@ -25,7 +25,7 @@ export function CreateNote() {
 
     return <div>
         <form onSubmit={commandCreateNote}>
-            Title:
+            Note name:
             <br/>
             <input type="text" onChange={e => setTitle(e.target.value)} value={title}/>
             <br/>

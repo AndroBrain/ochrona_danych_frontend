@@ -6,6 +6,7 @@ import {authContext} from "./auth/auth";
 import {Home} from "./home/Home";
 import {PublicNote} from "./note/PublicNote";
 import {CreateNote} from "./note/CreateNote";
+import {PrivateNote} from "./note/PrivateNote";
 
 function App() {
     const [authState, setAuthState] = useState({
@@ -18,6 +19,7 @@ function App() {
             <Route path="/login" element={<Login/>}/>,
             <Route path="/register" element={<Register/>}/>,
             <Route path="/public/:id" element={<PublicNote/>}/>,
+            <Route path="/private/:id" element={<PrivateNote/>}/>,
             <Route path="/create-note" element={<CreateNote/>}/>,
         ])
     )
