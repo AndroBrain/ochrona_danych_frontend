@@ -7,12 +7,14 @@ import ReactMarkdown from "react-markdown";
 import {MakeNotePublicRequest} from "../request/MakeNotePublicRequest";
 import {DecryptNoteRequest} from "../request/DecryptNoteRequest";
 import {EncryptNoteRequest} from "../request/EncryptNoteRequest";
+import {CheckIsPasswordValid, CheckPasswordStrength} from "../password/PasswordCheck";
 
 export function PrivateNote() {
     let {authState} = useContext(authContext)
     let params = useParams()
     let [decryptNotePassword, setDecryptNotePassword] = useState("")
     let [encryptNotePassword, setEncryptNotePassword] = useState("")
+    let [passwordStrength, setPasswordStrength] = useState("weak")
     let [note, setNote] = useState(null)
     let [error, setError] = useState(null)
     let [success, setSuccess] = useState(null)
@@ -36,7 +38,9 @@ export function PrivateNote() {
 
     const commandEncryptNote = (e) => {
         e.preventDefault()
-        EncryptNoteRequest(authState.jwt, note.id, encryptNotePassword, setError, setSuccess)
+        if (CheckIsPasswordValid(encryptNotePassword)) {
+            EncryptNoteRequest(authState.jwt, note.id, encryptNotePassword, setError, setSuccess)
+        }
     }
 
     return <div>
@@ -62,8 +66,15 @@ export function PrivateNote() {
                 </div>
                 <div style={{marginTop: "8px"}}>
                     <form onSubmit={commandEncryptNote}>
-                        <input type="password" onChange={e => setEncryptNotePassword(e.target.value)}
+                        <input type="password" onChange={e => {
+                            setEncryptNotePassword(e.target.value)
+                            setPasswordStrength(CheckPasswordStrength(e.target.value))
+                        }}
                                value={encryptNotePassword}/>
+                        <br/>
+                        <span>Password strength: {passwordStrength}</span>
+                        <br/>
+                        <span>Password must have at least 1 lowercase character, 1 uppercase character, 1 number and 1 special character(!@#$%^&*)</span>
                         <br/>
                         <button onClick={commandEncryptNote}>Encrypt</button>
                     </form>

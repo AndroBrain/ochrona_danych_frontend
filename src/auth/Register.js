@@ -1,11 +1,13 @@
 import {useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 import {RegisterRequest} from "../request/RegisterRequest";
+import {CheckIsPasswordValid, CheckPasswordStrength} from "../password/PasswordCheck";
 
 export function Register() {
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
+    const [passwordStrength, setPasswordStrength] = useState("weak")
     const [isSuccess, setIsSuccess] = useState(false)
     const [error, setError] = useState(null)
 
@@ -13,7 +15,9 @@ export function Register() {
 
     const commandRegister = (e) => {
         e.preventDefault()
-        RegisterRequest(setIsSuccess, setError, email, name, password)
+        if (CheckIsPasswordValid(password)) {
+            RegisterRequest(setIsSuccess, setError, email, name, password)
+        }
     }
 
     return <div>
@@ -32,7 +36,14 @@ export function Register() {
             <br/>
             Password:
             <br/>
-            <input type="password" onChange={e => setPassword(e.target.value)} value={password}/>
+            <input type="password" onChange={e => {
+                setPassword(e.target.value)
+                setPasswordStrength(CheckPasswordStrength(e.target.value))
+            }} value={password}/>
+            <br/>
+            <span>Password strength: {passwordStrength}</span>
+            <br/>
+            <span>Password must have at least 1 lowercase character, 1 uppercase character, 1 number and 1 special character(!@#$%^&*)</span>
             <br/>
             <button style={{marginTop: "1em"}} onClick={commandRegister}>Register
             </button>

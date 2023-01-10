@@ -42,6 +42,9 @@ export function Home() {
             <div style={{marginTop: "16px"}}>
                 {authState.jwt === null && <button onClick={(e) => navigate("/login")}>Login</button>}
             </div>
+            <div style={{marginTop: "16px"}}>
+                {authState.jwt === null && <button onClick={(e) => navigate("/register")}>Register</button>}
+            </div>
             <h2>Public notes</h2>
             {publicNotesError != null && <p>Error: {publicNotesError}</p>}
             <ul>
