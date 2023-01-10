@@ -16,6 +16,7 @@ export function PrivateNote() {
     let [encryptNotePassword, setEncryptNotePassword] = useState("")
     let [passwordStrength, setPasswordStrength] = useState("weak")
     let [note, setNote] = useState(null)
+    let [isLoading, setIsLoading] = useState(false)
     let [error, setError] = useState(null)
     let [success, setSuccess] = useState(null)
 
@@ -28,18 +29,23 @@ export function PrivateNote() {
 
     const commandDecryptNote = (e) => {
         e.preventDefault()
-        DecryptNoteRequest(authState.jwt, note.id, decryptNotePassword, note, setNote, setError,)
+        setIsLoading(true)
+        DecryptNoteRequest(authState.jwt, note.id, decryptNotePassword, note, setNote, setError, setIsLoading)
     }
 
     const commandMakePublic = (e) => {
         e.preventDefault()
-        MakeNotePublicRequest(authState.jwt, note.id, setError, setSuccess)
+        setIsLoading(true)
+        MakeNotePublicRequest(authState.jwt, note.id, setError, setSuccess, setIsLoading)
     }
 
     const commandEncryptNote = (e) => {
         e.preventDefault()
+        if (isLoading)
+            return
+        setIsLoading(true)
         if (CheckIsPasswordValid(encryptNotePassword)) {
-            EncryptNoteRequest(authState.jwt, note.id, encryptNotePassword, setError, setSuccess)
+            EncryptNoteRequest(authState.jwt, note.id, encryptNotePassword, setError, setSuccess, setIsLoading)
         }
     }
 
@@ -62,7 +68,7 @@ export function PrivateNote() {
             }
             {(note.isPublic !== true && note.isEncrypted !== true && success === null) && <div>
                 <div>
-                    <button onClick={commandMakePublic}>Make public</button>
+                    <button disabled={isLoading} onClick={commandMakePublic}>Make public</button>
                 </div>
                 <div style={{marginTop: "8px"}}>
                     <form onSubmit={commandEncryptNote}>
@@ -76,7 +82,7 @@ export function PrivateNote() {
                         <br/>
                         <span>Password must have at least 1 lowercase character, 1 uppercase character, 1 number and 1 special character(!@#$%^&*)</span>
                         <br/>
-                        <button onClick={commandEncryptNote}>Encrypt</button>
+                        <button disabled={isLoading} onClick={commandEncryptNote}>Encrypt</button>
                     </form>
                 </div>
             </div>

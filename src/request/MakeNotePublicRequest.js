@@ -1,6 +1,6 @@
 import {apiUrl} from "../App";
 
-export let MakeNotePublicRequest = (jwt, id, setError, setSuccess) => {
+export let MakeNotePublicRequest = (jwt, id, setError, setSuccess, setIsLoading) => {
     fetch(`${apiUrl}/Note/PublishNote?id=${id}`,
         {
             "mode": "cors",
@@ -12,6 +12,7 @@ export let MakeNotePublicRequest = (jwt, id, setError, setSuccess) => {
             },
         }
     ).then(response => {
+        setIsLoading(false)
         console.log(response.status)
         if (response.status === 200) {
             setSuccess("Note made public successfully")

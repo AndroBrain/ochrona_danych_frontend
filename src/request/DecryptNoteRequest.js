@@ -1,6 +1,6 @@
 import {apiUrl} from "../App";
 
-export let DecryptNoteRequest = (jwt, id, password, note, setNote, setError) => {
+export let DecryptNoteRequest = (jwt, id, password, note, setNote, setError, setIsLoading) => {
     fetch(`${apiUrl}/Note/DecryptNote`,
         {
             "mode": "cors",
@@ -18,6 +18,7 @@ export let DecryptNoteRequest = (jwt, id, password, note, setNote, setError) => 
             )
         }
     ).then(response => {
+        setIsLoading(false)
         console.log(response.status)
         if (response.status === 200) {
             console.log(response)

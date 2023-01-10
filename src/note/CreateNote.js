@@ -9,13 +9,15 @@ export function CreateNote() {
     let [title, setTitle] = useState("")
     let [description, setDescription] = useState("")
     let [error, setError] = useState(null)
+    let [isLoading, setIsLoading] = useState(false)
     let [isSuccess, setIsSuccess] = useState(false)
     let navigate = useNavigate()
 
     const commandCreateNote = (e) => {
         e.preventDefault()
         setError(null)
-        CreateNoteRequest(authState.jwt, title, description, setIsSuccess, setError)
+        setIsLoading(true)
+        CreateNoteRequest(setIsLoading, authState.jwt, title, description, setIsSuccess, setError)
     }
 
     useEffect(() => {
@@ -36,7 +38,7 @@ export function CreateNote() {
             Styled input:
             <ReactMarkdown children={description}/>
             <br/>
-            <button style={{marginTop: "1em"}} onClick={commandCreateNote}>Create note
+            <button disabled={isLoading} style={{marginTop: "1em"}} onClick={commandCreateNote}>Create note
             </button>
             {error != null && <p>Error: {error}</p>}
         </form>

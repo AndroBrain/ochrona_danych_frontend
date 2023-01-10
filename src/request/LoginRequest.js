@@ -1,6 +1,6 @@
 import {apiUrl} from "../App";
 
-export let LoginRequest = (setAuthState, setError, email, password) => {
+export let LoginRequest = (setIsLoading,setAuthState, setError, email, password) => {
     fetch(`${apiUrl}/Authentication/Login`,
         {
             "mode": "cors",
@@ -19,6 +19,7 @@ export let LoginRequest = (setAuthState, setError, email, password) => {
         }
     )
         .then(response => {
+            setIsLoading(false)
             if (response.status === 200) {
                 response.json().then(json => {
                     setAuthState({

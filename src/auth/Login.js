@@ -5,6 +5,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 
 export function Login() {
     const [email, setEmail] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
     const navigate = useNavigate()
@@ -12,7 +13,11 @@ export function Login() {
     let {authState, setAuthState} = useContext(authContext)
     const commandLogin = (e) => {
         e.preventDefault()
-        LoginRequest(setAuthState, setError, email, password)
+        if (isLoading)
+            return
+        setError(null)
+        setIsLoading(true)
+        LoginRequest(setIsLoading, setAuthState, setError, email, password)
     }
     return <div>
         {authState.jwt != null && <Navigate to="/"/>}
@@ -22,13 +27,13 @@ export function Login() {
         <form onSubmit={commandLogin}>
             Email:
             <br/>
-            <input type="text" onChange={e => setEmail(e.target.value)} value={email}/>
+            <input type="email" onChange={e => setEmail(e.target.value)} value={email}/>
             <br/>
             Password:
             <br/>
             <input type="password" onChange={e => setPassword(e.target.value)} value={password}/>
             <br/>
-            <button style={{marginTop: "1em"}} onClick={commandLogin}>Login
+            <button disabled={isLoading} style={{marginTop: "1em"}} onClick={commandLogin}>Login
             </button>
             <button style={{marginTop: "1em"}} onClick={(e) => navigate("/register")}>Go to register page
             </button>

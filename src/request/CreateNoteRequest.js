@@ -1,6 +1,6 @@
 import {apiUrl} from "../App";
 
-export let CreateNoteRequest = (jwt, title, description, setIsSuccess, setError) => {
+export let CreateNoteRequest = (setIsLoading, jwt, title, description, setIsSuccess, setError) => {
     fetch(`${apiUrl}/Note/AddNote`,
         {
             "mode": "cors",
@@ -18,6 +18,7 @@ export let CreateNoteRequest = (jwt, title, description, setIsSuccess, setError)
             )
         }
     ).then(response => {
+        setIsLoading(false)
         console.log(response.status)
         if (response.status === 200) {
             setIsSuccess(true)

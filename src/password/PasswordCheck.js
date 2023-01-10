@@ -9,7 +9,6 @@ export function CheckPasswordStrength(password) {
         .reduce((freq, c) => (freq[c] = (freq[c] || 0) + 1) && freq, {})
     const strength = Object.values(frequencies)
         .reduce((sum, f) => sum - f / len * Math.log2(f / len), 0)
-    console.log(strength)
     if (strength < 2) {
         return "weak"
     } else if (strength > 4) {

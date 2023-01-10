@@ -9,14 +9,18 @@ export function Register() {
     const [password, setPassword] = useState("")
     const [passwordStrength, setPasswordStrength] = useState("weak")
     const [isSuccess, setIsSuccess] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
 
     const navigate = useNavigate()
 
     const commandRegister = (e) => {
         e.preventDefault()
+        if (isLoading)
+            return
         if (CheckIsPasswordValid(password)) {
-            RegisterRequest(setIsSuccess, setError, email, name, password)
+            setIsLoading(true)
+            RegisterRequest(setIsLoading, setIsSuccess, setError, email, name, password)
         }
     }
 
@@ -28,7 +32,7 @@ export function Register() {
         <form onSubmit={commandRegister}>
             Email:
             <br/>
-            <input type="text" onChange={e => setEmail(e.target.value)} value={email}/>
+            <input type="email" onChange={e => setEmail(e.target.value)} value={email}/>
             <br/>
             Name:
             <br/>
@@ -45,7 +49,7 @@ export function Register() {
             <br/>
             <span>Password must have at least 1 lowercase character, 1 uppercase character, 1 number and 1 special character(!@#$%^&*)</span>
             <br/>
-            <button style={{marginTop: "1em"}} onClick={commandRegister}>Register
+            <button disabled={isLoading} style={{marginTop: "1em"}} onClick={commandRegister}>Register
             </button>
             <button style={{marginTop: "1em"}} onClick={(e) => navigate("/login")}>Go to login page
             </button>

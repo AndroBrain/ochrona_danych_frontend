@@ -1,6 +1,6 @@
 import {apiUrl} from "../App";
 
-export let EncryptNoteRequest = (jwt, id, password, setError, setSuccess) => {
+export let EncryptNoteRequest = (jwt, id, password, setError, setSuccess, setIsLoading) => {
     fetch(`${apiUrl}/Note/EncryptNote`,
         {
             "mode": "cors",
@@ -18,6 +18,7 @@ export let EncryptNoteRequest = (jwt, id, password, setError, setSuccess) => {
             )
         }
     ).then(response => {
+        setIsLoading(false)
         console.log(response.status)
         if (response.status === 200) {
             setSuccess(true)

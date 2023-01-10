@@ -1,6 +1,6 @@
 import {apiUrl} from "../App";
 
-export let RegisterRequest = (setSuccess, setError, email, name, password) => {
+export let RegisterRequest = (setIsLoading,setSuccess, setError, email, name, password) => {
     fetch(`${apiUrl}/Authentication/Register`,
         {
             "mode": "cors",
@@ -20,6 +20,7 @@ export let RegisterRequest = (setSuccess, setError, email, name, password) => {
         }
     )
         .then(response => {
+            setIsLoading(false)
             if (response.status === 200) {
                 setSuccess(true)
             } else {
